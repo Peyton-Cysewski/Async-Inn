@@ -5,7 +5,9 @@
 ----
 
 ## Description
-This program is an exercise in the ASP.NET Core framework to demonstrate the use of a database using fictional hotels. Visualized further below is an ERD that shows the relationships the data stored in the database. Each hotel is linked to a set of many hotel rooms. The hotel rooms are related to a base room that has an enumerated set of layouts. Each base room also is related to a set of groups of amenities that is further related to a set of all amenities.
+This program is an exercise in the ASP.NET Core framework to demonstrate the use of a database using fictional hotels. Visualized further below is an ERD that shows the relationships the data stored in the database. Each hotel is linked to a set of many hotel rooms. The hotel rooms are related to a base room that has an enumerated set of layouts. Each base room also is related to a set of groups of amenities that is further related to a set of all amenities.<br/>
+
+This program uses a dependency injection implementation. Instead of having a universal controller, each controller that directs CRUD operations is abstracted through the part of the database that it interacts with. This allows for more long-term flexibilty and robustness at the cost of adding just a few extra abstraction layers.
 
 ---
 
@@ -35,4 +37,5 @@ Then select and open ```Async-Inn.sln```
 ---
 
 ### Change Log
+1.2 *Implemented Dependency Injection* - 22 July 2020
 1.1: *Initial Release* - 21 July 2020  
