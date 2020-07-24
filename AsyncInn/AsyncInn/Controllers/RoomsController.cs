@@ -61,14 +61,14 @@ namespace AsyncInn.Controllers
             return CreatedAtAction("GetRoom", new { id = room.Id }, room);
         }
 
-        [HttpPost("{amenityId}/{roomId}")]
+        [HttpPost("{roomId}/Amenity/{amenityId}")]
         public async Task<ActionResult> AddRoomAmenityToRoom(int amenityId, int roomId)
         {
             await _room.AddRoomAmenities(amenityId, roomId);
             return Ok();
         }
 
-        [HttpDelete("{amenityId}/{roomId}")]
+        [HttpDelete("{roomId}/Amenity/{amenityId}")]
         public async Task<ActionResult> RemoveRoomAmenityFromRoom(int amenityId, int roomId)
         {
             await _room.RemoveRoomAmenity(amenityId, roomId);
