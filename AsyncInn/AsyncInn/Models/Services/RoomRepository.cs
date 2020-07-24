@@ -17,6 +17,11 @@ namespace AsyncInn.Models.Services
             _context = context;
         }
 
+        /// <summary>
+        /// Adds a new Room
+        /// </summary>
+        /// <param name="room">Room being added</param>
+        /// <returns>Task of completion</returns>
         public async Task<Room> Create(Room room)
         {
             _context.Entry(room).State = EntityState.Added;
@@ -24,6 +29,11 @@ namespace AsyncInn.Models.Services
             return room;
         }
 
+        /// <summary>
+        /// Removes a specific Room
+        /// </summary>
+        /// <param name="id">Unique identifier of the Room</param>
+        /// <returns>Task of completion</returns>
         public async Task Delete(int id)
         {
             Room room = await GetRoom(id);
@@ -31,18 +41,32 @@ namespace AsyncInn.Models.Services
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Gets a specific Room
+        /// </summary>
+        /// <param name="id">Unique identifier of the Room</param>
+        /// <returns>Task of completion</returns>
         public async Task<Room> GetRoom(int id)
         {
             Room room = await _context.Rooms.FindAsync(id);
             return room;
         }
 
+        /// <summary>
+        /// Gets all Rooms
+        /// </summary>
+        /// <returns>Task of completion</returns>
         public async Task<List<Room>> GetRooms()
         {
             var rooms = await _context.Rooms.ToListAsync();
             return rooms;
         }
 
+        /// <summary>
+        /// Updates a specific Room
+        /// </summary>
+        /// <param name="id">Unique identifier of the Room</param>
+        /// <returns>Task of completion</returns>
         public async Task<Room> Update(Room room)
         {
             _context.Entry(room).State = EntityState.Modified;
@@ -50,6 +74,12 @@ namespace AsyncInn.Models.Services
             return room;
         }
 
+        /// <summary>
+        /// Adds a specific RoomAmenity to a specific Room
+        /// </summary>
+        /// <param name="amenityId">Unique identifier of the Amenity</param>
+        /// <param name="roomId">Unique identifier of the Room</param>
+        /// <returns>Task of completion</returns>
         public async Task AddRoomAmenities(int amenityId, int roomId)
         {
             RoomAmenities roomAmenity = new RoomAmenities()
@@ -59,6 +89,19 @@ namespace AsyncInn.Models.Services
             };
 
             _context.Entry(roomAmenity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Removes a specific RoomAmenity from a specific Room
+        /// </summary>
+        /// <param name="amenityId">Unique identifier of the Amenity</param>
+        /// <param name="roomId">Unique identifier of the Room</param>
+        /// <returns>Task of completion</returns>
+        public async Task RemoveRoomAmenity(int amenityId, int roomId)
+        {
+            var result = _context.RoomAmenities.FirstOrDefaultAsync(x => x.AmenityId == amenityId && x.RoomId == roomId);
+            _context.Entry(result).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
     }

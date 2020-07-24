@@ -37,5 +37,6 @@ Then select and open ```Async-Inn.sln```
 ---
 
 ### Change Log
+1.3 *Completed Repository Design* - 23 July 2020
 1.2 *Implemented Dependency Injection* - 22 July 2020
 1.1: *Initial Release* - 21 July 2020  
