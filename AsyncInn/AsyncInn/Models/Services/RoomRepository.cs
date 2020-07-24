@@ -49,5 +49,17 @@ namespace AsyncInn.Models.Services
             await _context.SaveChangesAsync();
             return room;
         }
+
+        public async Task AddRoomAmenities(int amenityId, int roomId)
+        {
+            RoomAmenities roomAmenity = new RoomAmenities()
+            {
+                AmenityId = amenityId,
+                RoomId = roomId
+            };
+
+            _context.Entry(roomAmenity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+        }
     }
 }
