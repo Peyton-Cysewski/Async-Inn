@@ -49,6 +49,8 @@ namespace AsyncInn.Models.Services
         public async Task<Room> GetRoom(int id)
         {
             Room room = await _context.Rooms.FindAsync(id);
+            var roomAmenity = await _context.RoomAmenities.Where(x => x.RoomId == id).Include(x => x.Amenity).ToListAsync();
+            room.RoomAmenities = roomAmenity;
             return room;
         }
 
