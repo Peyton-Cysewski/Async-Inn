@@ -36,6 +36,10 @@ namespace AsyncInn.Models.Services
         public async Task<HotelRoom> GetHotelRoom(int hotelId, int roomNumber)
         {
             HotelRoom hotelRoom = await _context.HotelRooms.FirstOrDefaultAsync(x => x.HotelId == hotelId && x.RoomNumber == roomNumber);
+            var rooms = await _context.Rooms.Where(x => x.Id == hotelRoom.RoomId).Include(x => x.RoomAmenities).ToListAsync();
+            hotelRoom.Room = rooms;
+            //var hotel = await _context.Hotels.FirstOrDefaultAsync(x => x.Id == hotelId);
+            //hotelRoom.Hotel = hotel;
             return hotelRoom;
         }
 
