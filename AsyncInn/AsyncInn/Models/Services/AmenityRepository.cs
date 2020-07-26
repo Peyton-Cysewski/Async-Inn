@@ -17,6 +17,11 @@ namespace AsyncInn.Models.Services
             _context = context;
         }
 
+        /// <summary>
+        /// Adds an Amenity
+        /// </summary>
+        /// <param name="amenity">Unique Amenity identifier</param>
+        /// <returns>Task of completion</returns>
         public async Task<Amenity> Create(Amenity amenity)
         {
             _context.Entry(amenity).State = EntityState.Added;
@@ -24,6 +29,11 @@ namespace AsyncInn.Models.Services
             return amenity;
         }
 
+        /// <summary>
+        /// Removes a specific Amenity
+        /// </summary>
+        /// <param name="id">unique Amenity identifier</param>
+        /// <returns>Task of completion</returns>
         public async Task Delete(int id)
         {
             Amenity amenity = await GetAmenity(id);
@@ -31,12 +41,21 @@ namespace AsyncInn.Models.Services
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Gets all Amenities
+        /// </summary>
+        /// <returns>Task of completion</returns>
         public async Task<List<Amenity>> GetAmenities()
         {
             var amenities = await _context.Amenities.ToListAsync();
             return amenities;
         }
 
+        /// <summary>
+        /// Gets a specific Amenity
+        /// </summary>
+        /// <param name="id">Unique Amenity identifier</param>
+        /// <returns>Task of completion</returns>
         public async Task<Amenity> GetAmenity(int id)
         {
             Amenity amenity = await _context.Amenities.FindAsync(id);
@@ -45,6 +64,11 @@ namespace AsyncInn.Models.Services
             return amenity;
         }
 
+        /// <summary>
+        /// Updates a specific Amenity
+        /// </summary>
+        /// <param name="amenity">Unique Amenity identifier</param>
+        /// <returns>Task of completion</returns>
         public async Task<Amenity> Update(Amenity amenity)
         {
             _context.Entry(amenity).State = EntityState.Modified;

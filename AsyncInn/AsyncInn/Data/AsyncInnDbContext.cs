@@ -20,6 +20,8 @@ namespace AsyncInn.Data
 
             modelBuilder.Entity<RoomAmenities>().HasKey(x => new { x.AmenityId, x.RoomId });
 
+            // Seeding
+            #region
             modelBuilder.Entity<Hotel>().HasData(
                 new Hotel
                 {
@@ -89,6 +91,7 @@ namespace AsyncInn.Data
                     Id = 3,
                     Name = "Microwave Oven"
                 });
+            #endregion
         }
 
         public DbSet<Hotel> Hotels { get; set; }
