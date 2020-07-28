@@ -87,8 +87,14 @@ namespace AsyncInn.Models.Services
         /// </summary>
         /// <param name="id">Unique identifier of the Room</param>
         /// <returns>Task of completion</returns>
-        public async Task<Room> Update(Room room)
+        public async Task<Room> Update(RoomDTO dto)
         {
+            Room room = new Room()
+            {
+                Id = dto.ID,
+                Name = dto.Name,
+                Layout = dto.Layout
+            };
             _context.Entry(room).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return room;
