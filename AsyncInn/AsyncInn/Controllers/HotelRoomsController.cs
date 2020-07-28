@@ -42,12 +42,12 @@ namespace AsyncInn.Controllers
         [HttpPut("{hotelId}/Rooms/{roomNumber}")]
         public async Task<IActionResult> PutHotelRoom(int hotelId, int roomNumber, HotelRoom hotelRoom)
         {
-            if (hotelId != hotelRoom.HotelId)
+            if (hotelId != hotelRoom.HotelId || roomNumber != hotelRoom.RoomNumber)
             {
                 return BadRequest();
             }
             await _hotelRoom.Update(hotelId, roomNumber, hotelRoom);
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/HotelRooms

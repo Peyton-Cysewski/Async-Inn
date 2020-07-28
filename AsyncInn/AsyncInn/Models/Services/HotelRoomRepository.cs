@@ -1,4 +1,4 @@
-﻿using AsyncInn.Data;
+﻿                            using AsyncInn.Data;
 using AsyncInn.Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -53,11 +53,12 @@ namespace AsyncInn.Models.Services
         /// <returns>Task of completion</returns>
         public async Task<HotelRoom> GetHotelRoom(int hotelId, int roomNumber)
         {
-            HotelRoom hotelRoom = await _context.HotelRooms.FirstOrDefaultAsync(x => x.HotelId == hotelId && x.RoomNumber == roomNumber);
-            var rooms = await _context.Rooms.Where(x => x.Id == hotelRoom.RoomId).Include(x => x.RoomAmenities).ToListAsync();
-            hotelRoom.Room = rooms;
-            //var hotel = await _context.Hotels.FirstOrDefaultAsync(x => x.Id == hotelId);
-            //hotelRoom.Hotel = hotel;
+            var hotelRoom = await _context.HotelRooms.Where(x => x.HotelId == hotelId && x.RoomNumber == roomNumber)
+                                                        .Include(x => x.Room)
+                                                        .ThenInclude(x => x.RoomAmenities)
+                                                        .ThenInclude(x => x.Amenity)
+                                                        .Include(x => x.Hotel)
+                                                        .FirstOrDefaultAsync();
             return hotelRoom;
         }
 
