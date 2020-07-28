@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AsyncInn.Data;
 using Microsoft.EntityFrameworkCore;
+using AsyncInn.Models.DTOs;
 
 namespace AsyncInn.Models.Services
 {
@@ -22,11 +23,16 @@ namespace AsyncInn.Models.Services
         /// </summary>
         /// <param name="amenity">Unique Amenity identifier</param>
         /// <returns>Task of completion</returns>
-        public async Task<Amenity> Create(Amenity amenity)
+        public async Task<AmenityDTO> Create(AmenityDTO dto)
         {
+            Amenity amenity = new Amenity()
+            {
+                Name = dto.Name
+            };
             _context.Entry(amenity).State = EntityState.Added;
             await _context.SaveChangesAsync();
-            return amenity;
+            dto.ID = amenity.Id;
+            return dto;
         }
 
         /// <summary>
@@ -36,7 +42,7 @@ namespace AsyncInn.Models.Services
         /// <returns>Task of completion</returns>
         public async Task Delete(int id)
         {
-            Amenity amenity = await GetAmenity(id);
+            Amenity amenity = await _context.Amenities.FindAsync(id);
             _context.Entry(amenity).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
@@ -45,9 +51,14 @@ namespace AsyncInn.Models.Services
         /// Gets all Amenities
         /// </summary>
         /// <returns>Task of completion</returns>
-        public async Task<List<Amenity>> GetAmenities()
+        public async Task<List<AmenityDTO>> GetAmenities()
         {
-            var amenities = await _context.Amenities.ToListAsync();
+            var list = await _context.Amenities.ToListAsync();
+            var amenities = new List<AmenityDTO>();
+            foreach (var item in list)
+            {
+                amenities.Add(await GetAmenity(item.Id));
+            }
             return amenities;
         }
 
@@ -56,12 +67,15 @@ namespace AsyncInn.Models.Services
         /// </summary>
         /// <param name="id">Unique Amenity identifier</param>
         /// <returns>Task of completion</returns>
-        public async Task<Amenity> GetAmenity(int id)
+        public async Task<AmenityDTO> GetAmenity(int id)
         {
             Amenity amenity = await _context.Amenities.FindAsync(id);
-            var roomAmenities = await _context.RoomAmenities.Where(x => x.AmenityId == id).Include(x => x.Room).ToListAsync();
-            amenity.RoomAmenities = roomAmenities;
-            return amenity;
+            AmenityDTO dto = new AmenityDTO()
+            {
+                ID = amenity.Id,
+                Name = amenity.Name
+            };
+            return dto;
         }
 
         /// <summary>

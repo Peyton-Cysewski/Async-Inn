@@ -1,4 +1,5 @@
 ﻿using AsyncInn.Data;
+using AsyncInn.Models.DTOs;
 using AsyncInn.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +23,17 @@ namespace AsyncInn.Models.Services
         /// </summary>
         /// <param name="room">Room being added</param>
         /// <returns>Task of completion</returns>
-        public async Task<Room> Create(Room room)
+        public async Task<RoomDTO> Create(RoomDTO dto)
         {
+            Room room = new Room()
+            {
+                Name = dto.Name,
+                Layout = dto.Layout
+            };
             _context.Entry(room).State = EntityState.Added;
             await _context.SaveChangesAsync();
-            return room;
+            dto.ID = room.Id;
+            return dto;
         }
 
         /// <summary>
@@ -36,7 +43,7 @@ namespace AsyncInn.Models.Services
         /// <returns>Task of completion</returns>
         public async Task Delete(int id)
         {
-            Room room = await GetRoom(id);
+            Room room = await _context.Rooms.FindAsync(id);
             _context.Entry(room).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
@@ -46,21 +53,32 @@ namespace AsyncInn.Models.Services
         /// </summary>
         /// <param name="id">Unique identifier of the Room</param>
         /// <returns>Task of completion</returns>
-        public async Task<Room> GetRoom(int id)
+        public async Task<RoomDTO> GetRoom(int id)
         {
             Room room = await _context.Rooms.FindAsync(id);
-            var roomAmenity = await _context.RoomAmenities.Where(x => x.RoomId == id).Include(x => x.Amenity).ToListAsync();
-            room.RoomAmenities = roomAmenity;
-            return room;
+            RoomDTO dto = new RoomDTO()
+            {
+                ID = room.Id,
+                Name = room.Name,
+                Layout = room.Layout
+            };
+            //var roomAmenity = await _context.RoomAmenities.Where(x => x.RoomId == id).Include(x => x.Amenity).ToListAsync();
+            //room.RoomAmenities = roomAmenity;
+            return dto;
         }
 
         /// <summary>
         /// Gets all Rooms
         /// </summary>
         /// <returns>Task of completion</returns>
-        public async Task<List<Room>> GetRooms()
+        public async Task<List<RoomDTO>> GetRooms()
         {
-            var rooms = await _context.Rooms.ToListAsync();
+            var list = await _context.Rooms.ToListAsync();
+            var rooms = new List<RoomDTO>();
+            foreach(var item in list)
+            {
+                rooms.Add(await GetRoom(item.Id));
+            }
             return rooms;
         }
 

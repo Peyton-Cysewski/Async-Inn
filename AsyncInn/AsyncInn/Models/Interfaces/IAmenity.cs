@@ -1,4 +1,5 @@
 ﻿using AsyncInn.Data;
+using AsyncInn.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,20 +14,20 @@ namespace AsyncInn.Models.Interfaces
         /// </summary>
         /// <param name="amenity">Unique Amenity identifier</param>
         /// <returns>Task of completion</returns>
-        Task<Amenity> Create(Amenity amenity);
+        Task<AmenityDTO> Create(AmenityDTO amenity);
 
         /// <summary>
         /// Gets all Amenities
         /// </summary>
         /// <returns>Task of completion</returns>
-        Task<List<Amenity>> GetAmenities();
+        Task<List<AmenityDTO>> GetAmenities();
 
         /// <summary>
         /// Gets a specific Amenity
         /// </summary>
         /// <param name="id">Unique Amenity identifier</param>
         /// <returns>Task of completion</returns>
-        Task<Amenity> GetAmenity(int id);
+        Task<AmenityDTO> GetAmenity(int id);
 
         /// <summary>
         /// Updates a specific Amenity
