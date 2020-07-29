@@ -33,7 +33,7 @@ namespace AsyncInn.Models.Interfaces
         /// </summary>
         /// <param name="id">Unique identifier of the Room</param>
         /// <returns>Task of completion</returns>
-        Task<Room> Update(RoomDTO room);
+        Task Update(RoomDTO room);
 
         /// <summary>
         /// Removes a specific Room

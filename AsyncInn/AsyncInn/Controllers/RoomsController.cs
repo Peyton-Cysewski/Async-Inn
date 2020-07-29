@@ -48,8 +48,8 @@ namespace AsyncInn.Controllers
             {
                 return BadRequest();
             }
-            var updatedRoom = await _room.Update(dto);
-            return Ok(updatedRoom);
+            await _room.Update(dto);
+            return Ok();
         }
 
         // POST: api/Rooms

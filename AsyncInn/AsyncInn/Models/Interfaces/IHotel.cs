@@ -33,7 +33,7 @@ namespace AsyncInn.Models.Interfaces
         /// </summary>
         /// <param name="hotel">Hotel being updated</param>
         /// <returns>Task of completion</returns>
-        Task<Hotel> Update(Hotel hotel);
+        Task Update(Hotel hotel);
 
         /// <summary>
         /// Removes a specific Hotel

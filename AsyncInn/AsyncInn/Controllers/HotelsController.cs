@@ -34,7 +34,7 @@ namespace AsyncInn.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<HotelDTO>> GetHotel(int id)
         {
-            Hotel hotel = await _hotel.GetHotel(id);
+            HotelDTO hotel = await _hotel.GetHotel(id);
             return hotel;
         }
 
@@ -48,8 +48,8 @@ namespace AsyncInn.Controllers
             {
                 return BadRequest();
             }
-            var updatedHotel = await _hotel.Update(hotel);
-            return Ok(updatedHotel);
+            await _hotel.Update(hotel);
+            return Ok();
         }
 
         // POST: api/Hotels

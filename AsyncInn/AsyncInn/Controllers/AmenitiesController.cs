@@ -48,8 +48,8 @@ namespace AsyncInn.Controllers
             {
                 return BadRequest();
             }
-            var updatedAmenity = await _amenity.Update(amenity);
-            return Ok(updatedAmenity);
+            await _amenity.Update(amenity);
+            return Ok();
         }
 
         // POST: api/Amenities
