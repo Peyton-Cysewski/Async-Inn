@@ -56,14 +56,19 @@ namespace AsyncInn.Models.Services
         public async Task<RoomDTO> GetRoom(int id)
         {
             Room room = await _context.Rooms.FindAsync(id);
+            List<RoomAmenities> roomAmenities = await _context.RoomAmenities.Where(x => x.RoomId == id).ToListAsync();
+            List<AmenityDTO> amenities = new List<AmenityDTO>();
+            foreach (var item in roomAmenities)
+            {
+                amenities.Add(await new AmenityRepository(_context).GetAmenity(item.AmenityId));
+            }
             RoomDTO dto = new RoomDTO()
             {
                 ID = room.Id,
                 Name = room.Name,
-                Layout = room.Layout
+                Layout = room.Layout,
+                Amenities = amenities
             };
-            //var roomAmenity = await _context.RoomAmenities.Where(x => x.RoomId == id).Include(x => x.Amenity).ToListAsync();
-            //room.RoomAmenities = roomAmenity;
             return dto;
         }
 
@@ -87,11 +92,16 @@ namespace AsyncInn.Models.Services
         /// </summary>
         /// <param name="id">Unique identifier of the Room</param>
         /// <returns>Task of completion</returns>
-        public async Task<Room> Update(Room room)
+        public async Task Update(RoomDTO dto)
         {
+            Room room = new Room()
+            {
+                Id = dto.ID,
+                Name = dto.Name,
+                Layout = dto.Layout
+            };
             _context.Entry(room).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return room;
         }
 
         /// <summary>

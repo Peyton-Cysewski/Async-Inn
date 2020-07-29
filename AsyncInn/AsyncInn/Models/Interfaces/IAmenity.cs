@@ -34,7 +34,7 @@ namespace AsyncInn.Models.Interfaces
         /// </summary>
         /// <param name="amenity">Unique Amenity identifier</param>
         /// <returns>Task of completion</returns>
-        Task<Amenity> Update(Amenity amenity);
+        Task Update(Amenity amenity);
 
         /// <summary>
         /// Removes a specific Amenity

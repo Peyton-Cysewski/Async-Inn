@@ -83,11 +83,10 @@ namespace AsyncInn.Models.Services
         /// </summary>
         /// <param name="amenity">Unique Amenity identifier</param>
         /// <returns>Task of completion</returns>
-        public async Task<Amenity> Update(Amenity amenity)
+        public async Task Update(Amenity amenity)
         {
             _context.Entry(amenity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return amenity;
         }
     }
 }
