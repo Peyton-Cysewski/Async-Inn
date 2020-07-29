@@ -1,4 +1,5 @@
 ﻿using AsyncInn.Data;
+using AsyncInn.Models.DTOs;
 using AsyncInn.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -48,7 +49,7 @@ namespace AsyncInn.Models.Services
         /// </summary>
         /// <param name="id">Unique Hotel identifier</param>
         /// <returns>Task of completion</returns>
-        public async Task<Hotel> GetHotel(int id)
+        public async Task<HotelDTO> GetHotel(int id)
         {
             Hotel hotel = await _context.Hotels.FindAsync(id);
             var hotelRoom = await _context.HotelRooms.Where(x => x.HotelId == id).Include(x => x.Room).ToListAsync();
@@ -59,7 +60,7 @@ namespace AsyncInn.Models.Services
         /// Gets all Hotels
         /// </summary>
         /// <returns>Task of completion</returns>
-        public async Task<List<Hotel>> GetHotels()
+        public async Task<List<HotelDTO>> GetHotels()
         {
             var hotels = await _context.Hotels.ToListAsync();
             return hotels;
