@@ -32,6 +32,7 @@ namespace AsyncInn.Controllers
             _config = configuration;
 
         }
+
         // api/Account/register
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDTO register)

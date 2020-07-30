@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,10 +33,13 @@ namespace AsyncInn
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(new AuthorizeFilter());
+            })
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.AddControllers(); // unnecessary?
             services.AddDbContext<AsyncInnDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -64,12 +68,10 @@ namespace AsyncInn
                 };
             });
 
-           // services.AddAuthorization(options =>
-           //{
-           //    options.AddPolicy("ManagementPriviledges", policy => policy.RequireRole())
-
-           //});
-
+            services.AddAuthorization(options =>
+           {
+               options.AddPolicy("ManagementPriviledges", policy => policy.RequireRole(ApplicationRoles.DistrictManager));
+           });
 
             services.AddTransient<IHotel, HotelRepository>();
             services.AddTransient<IRoom, RoomRepository>();
@@ -78,7 +80,7 @@ namespace AsyncInn
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -86,8 +88,12 @@ namespace AsyncInn
             }
 
             app.UseRouting();
-
             app.UseAuthentication();
+            app.UseAuthorization();
+
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+            RoleInitializer.SeedData(serviceProvider, userManager, Configuration);
 
             app.UseEndpoints(endpoints =>
             {

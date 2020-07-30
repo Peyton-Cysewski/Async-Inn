@@ -13,7 +13,8 @@ namespace AsyncInn.Models
     }
     public static class ApplicationRoles
     {
-        public const string Owner = "Owner";
-        public const string GeneralManager = "GeneralManager";
+        public const string DistrictManager = "DistrictManager";
+        public const string PropertyManager = "PropertyManager";
+        public const string Agent = "Agent";
     }
 }
