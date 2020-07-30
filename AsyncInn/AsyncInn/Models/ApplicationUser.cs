@@ -11,4 +11,9 @@ namespace AsyncInn.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }
+    public static class ApplicationRoles
+    {
+        public const string Owner = "Owner";
+        public const string GeneralManager = "GeneralManager";
+    }
 }
