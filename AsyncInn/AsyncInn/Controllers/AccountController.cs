@@ -51,16 +51,23 @@ namespace AsyncInn.Controllers
             {
                 //await _signInManager.SignInAsync(user, false);
                 //return Ok();
-                if (user.Email == _config["GeneralMangerSeed"])
+                if (user.Email == _config["DistrictManagerEmail"])
                 {
-
+                    register.Role = ApplicationRoles.DistrictManager;
+                    await _userManager.AddToRoleAsync(user, ApplicationRoles.DistrictManager);
                 }
+                else
+                {
+                    await _userManager.AddToRoleAsync(user, register.Role);
+                }
+                await _signInManager.SignInAsync(user, false);
+                return Ok();
             }
 
             return BadRequest("Invalid Regestration");
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginDTO login)
         {
