@@ -19,7 +19,7 @@ namespace AsyncInn.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class AccountController : ControllerBase
     {
         private UserManager<ApplicationUser> _userManager;
@@ -33,8 +33,9 @@ namespace AsyncInn.Controllers
 
         }
 
-        // api/Account/register
+        // api/account/register
         [HttpPost("register")]
+        [Authorize(Policy = "ManagementPriviledges")]
         public async Task<IActionResult> Register(RegisterDTO register)
         {
             ApplicationUser user = new ApplicationUser()
@@ -49,8 +50,6 @@ namespace AsyncInn.Controllers
 
             if (result.Succeeded)
             {
-                //await _signInManager.SignInAsync(user, false);
-                //return Ok();
                 if (user.Email == _config["DistrictManagerEmail"])
                 {
                     register.Role = ApplicationRoles.DistrictManager;
@@ -75,7 +74,8 @@ namespace AsyncInn.Controllers
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(login.Email);
-                var token = CreateToken(user);
+                var identityRole = await _userManager.GetRolesAsync(user);
+                var token = CreateToken(user, identityRole.ToList());
                 return Ok(new {
                     jwt = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo
@@ -93,9 +93,9 @@ namespace AsyncInn.Controllers
             await _userManager.AddToRoleAsync(user, assignment.Role);
         }
 
-        private JwtSecurityToken CreateToken(ApplicationUser user)
+        private JwtSecurityToken CreateToken(ApplicationUser user, List<string> role)
         {
-            var authClaims = new[]
+            var authClaims = new List<Claim>()
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -105,10 +105,15 @@ namespace AsyncInn.Controllers
     
             };
 
+            foreach (var item in role)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, item));
+            }
+
             var token = AuthenticateToken(authClaims);
             return token;
         }
-        private JwtSecurityToken AuthenticateToken(Claim[] claims)
+        private JwtSecurityToken AuthenticateToken(List<Claim> claims)
         {
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWTKey"]));
             var token = new JwtSecurityToken(
