@@ -4,6 +4,7 @@ using AsyncInn.Models.DTOs;
 using AsyncInn.Models;
 using AsyncInn.Models.Interfaces;
 using AsyncInn.Models.Services;
+using System;
 
 namespace AsyncInnTests
 {
@@ -32,6 +33,19 @@ namespace AsyncInnTests
             Assert.NotEqual(0, amenity.ID);
             Assert.Equal(saved.ID, amenity.ID);
             Assert.Equal(saved.Name, amenity.Name);
+        }
+
+        [Fact]
+        public async Task CanSaveAndGetAnAmenity()
+        {
+            // Arrange
+            var repository = BuildRepository();
+            // Act
+            var result = await repository.GetAmenity(1);
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(1, result.ID);
+            Assert.Equal(typeof(AmenityDTO), result.GetType());
         }
 
         [Fact]
@@ -84,6 +98,19 @@ namespace AsyncInnTests
             Assert.NotNull(amenity);
             Assert.NotEqual(0, amenity.Id);
             Assert.Equal(_db.Amenities.Find(1), amenity);
+        }
+
+        [Fact]
+        public async Task CanDeleteAnAmenity()
+        {
+            // Arrange
+            var repository = BuildRepository();
+            // Act
+            await repository.Delete(1);
+            var result = await repository.GetAmenities();
+            // Assert
+            Assert.Equal(2, result.Count);
+            Assert.Null(_db.Amenities.Find(1));
         }
     }
 }
