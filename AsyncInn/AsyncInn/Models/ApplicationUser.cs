@@ -11,4 +11,10 @@ namespace AsyncInn.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }
+    public static class ApplicationRoles
+    {
+        public const string DistrictManager = "DistrictManager";
+        public const string PropertyManager = "PropertyManager";
+        public const string Agent = "Agent";
+    }
 }
