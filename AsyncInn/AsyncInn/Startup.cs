@@ -70,7 +70,9 @@ namespace AsyncInn
 
             services.AddAuthorization(options =>
            {
-               options.AddPolicy("ManagementPriviledges", policy => policy.RequireRole(ApplicationRoles.DistrictManager));
+               options.AddPolicy("DistrictManager", policy => policy.RequireRole(ApplicationRoles.DistrictManager));
+               options.AddPolicy("PropertyManager", policy => policy.RequireRole(ApplicationRoles.PropertyManager));
+               options.AddPolicy("Agent", policy => policy.RequireRole(ApplicationRoles.Agent));
            });
 
             services.AddTransient<IHotel, HotelRepository>();

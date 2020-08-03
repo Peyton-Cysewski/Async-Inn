@@ -35,7 +35,7 @@ namespace AsyncInn.Controllers
 
         // api/account/register
         [HttpPost("register")]
-        [Authorize(Policy = "ManagementPriviledges")]
+        [Authorize(Policy = "DistrictManager")]
         public async Task<IActionResult> Register(RegisterDTO register)
         {
             ApplicationUser user = new ApplicationUser()
@@ -86,7 +86,7 @@ namespace AsyncInn.Controllers
         }
 
         [HttpPost("assign/role")]
-        [Authorize(Policy = "ManagementPriviledges")]
+        [Authorize(Policy = "DistrictManager")]
         public async Task AssignRoleToUser(AssignRoleDTO assignment)
         {
             var user = await _userManager.FindByEmailAsync(assignment.Email);

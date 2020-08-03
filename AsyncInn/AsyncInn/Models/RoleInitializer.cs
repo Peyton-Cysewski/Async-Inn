@@ -21,7 +21,7 @@ namespace AsyncInn.Models
 
         public static void SeedData(IServiceProvider serviceProvider, UserManager<ApplicationUser> users, IConfiguration _config)
         {
-            using(var dbContext = new AsyncInnDbContext(serviceProvider.GetRequiredService<DbContextOptions<AsyncInnDbContext>>()))
+            using (var dbContext = new AsyncInnDbContext(serviceProvider.GetRequiredService<DbContextOptions<AsyncInnDbContext>>()))
             {
                 dbContext.Database.EnsureCreated();
                 AddRoles(dbContext);
@@ -52,7 +52,7 @@ namespace AsyncInn.Models
         {
             if (context.Roles.Any()) return;
 
-            foreach(var role in Roles)
+            foreach (var role in Roles)
             {
                 context.Roles.Add(role);
                 context.SaveChanges();
