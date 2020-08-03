@@ -37,6 +37,7 @@ Then select and open ```Async-Inn.sln```
 ---
 
 ### Change Log
+1.7 *Added Authentication and Authorization, Added unit testing* - 2 August 2020
 1.6 *Fully Implemented DTO's* - 28 July 2020
 1.5 *Began Adding DTO's* - 27 July 2020
 1.4 *Filled in all methods and added comments* - 26 July 2020
