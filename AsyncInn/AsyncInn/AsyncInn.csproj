@@ -10,6 +10,10 @@
     <Compile Remove="Migrations\20200724050854_newRoomAmenitiesTable.Designer.cs" />
     <Compile Remove="Migrations\20200728183705_userTable.cs" />
     <Compile Remove="Migrations\20200728183705_userTable.Designer.cs" />
+    <Compile Remove="Migrations\20200803003028_addidentity.cs" />
+    <Compile Remove="Migrations\20200803003028_addidentity.Designer.cs" />
+    <Compile Remove="Migrations\20200803010253_usertables.cs" />
+    <Compile Remove="Migrations\20200803010253_usertables.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

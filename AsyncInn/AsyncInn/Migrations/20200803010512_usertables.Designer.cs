@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AsyncInn.Migrations
 {
     [DbContext(typeof(AsyncInnDbContext))]
-    [Migration("20200729015806_usertable")]
-    partial class usertable
+    [Migration("20200803010512_usertables")]
+    partial class usertables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

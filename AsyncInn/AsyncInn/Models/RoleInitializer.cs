@@ -15,7 +15,7 @@ namespace AsyncInn.Models
         private static readonly List<IdentityRole> Roles = new List<IdentityRole>()
         {
             new IdentityRole{Name = ApplicationRoles.DistrictManager, NormalizedName = ApplicationRoles.DistrictManager.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString()},
-            new IdentityRole{Name = ApplicationRoles.PropertyManager, NormalizedName = ApplicationRoles.DistrictManager.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString()},
+            new IdentityRole{Name = ApplicationRoles.PropertyManager, NormalizedName = ApplicationRoles.PropertyManager.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString()},
             new IdentityRole{Name = ApplicationRoles.Agent, NormalizedName = ApplicationRoles.Agent.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString()}
         };
 
@@ -31,7 +31,7 @@ namespace AsyncInn.Models
 
         private static void SeedUsers(UserManager<ApplicationUser> userManager, IConfiguration _config)
         {
-            if (userManager.FindByEmailAsync(_config["AdminEmail"]) == null)
+            if (userManager.FindByEmailAsync(_config["AdminEmail"]).Result == null)
             {
                 ApplicationUser user = new ApplicationUser();
                 user.UserName = _config["AdminEmail"];

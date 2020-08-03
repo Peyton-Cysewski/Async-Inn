@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AsyncInn.Migrations
 {
-    public partial class usertable : Migration
+    public partial class usertables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -71,8 +71,9 @@ namespace AsyncInn
             services.AddAuthorization(options =>
            {
                options.AddPolicy("DistrictManager", policy => policy.RequireRole(ApplicationRoles.DistrictManager));
-               options.AddPolicy("PropertyManager", policy => policy.RequireRole(ApplicationRoles.PropertyManager));
-               options.AddPolicy("Agent", policy => policy.RequireRole(ApplicationRoles.Agent));
+               options.AddPolicy("PropertyManager", policy => policy.RequireRole(ApplicationRoles.PropertyManager, ApplicationRoles.DistrictManager));
+               options.AddPolicy("PropertyManagerOnly", policy => policy.RequireRole(ApplicationRoles.PropertyManager));
+               options.AddPolicy("Agent", policy => policy.RequireRole(ApplicationRoles.Agent, ApplicationRoles.PropertyManager, ApplicationRoles.DistrictManager));
            });
 
             services.AddTransient<IHotel, HotelRepository>();

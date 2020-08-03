@@ -12,14 +12,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-//using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AsyncInn.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
     public class AccountController : ControllerBase
     {
         private UserManager<ApplicationUser> _userManager;
@@ -66,6 +64,32 @@ namespace AsyncInn.Controllers
             return BadRequest("Invalid Regestration");
         }
 
+        // api/account/register
+        [HttpPost("register/agent")]
+        [Authorize(Policy = "PropertyManagerOnly")] //Property Managers can only register Agents
+        public async Task<IActionResult> RegisterAgent(RegisterDTO register)
+        {
+            ApplicationUser user = new ApplicationUser()
+            {
+                Email = register.Email,
+                UserName = register.Email,
+                FirstName = register.FirstName,
+                LastName = register.LastName
+            };
+
+            var result = await _userManager.CreateAsync(user, register.Password);
+
+            if (result.Succeeded)
+            {
+                register.Role = ApplicationRoles.Agent;
+                await _userManager.AddToRoleAsync(user, ApplicationRoles.Agent);
+                await _signInManager.SignInAsync(user, false);
+                return Ok();
+            }
+
+            return BadRequest("Invalid Regestration");
+        }
+
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginDTO login)
@@ -76,7 +100,8 @@ namespace AsyncInn.Controllers
                 var user = await _userManager.FindByEmailAsync(login.Email);
                 var identityRole = await _userManager.GetRolesAsync(user);
                 var token = CreateToken(user, identityRole.ToList());
-                return Ok(new {
+                return Ok(new
+                {
                     jwt = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo
                 });
@@ -102,7 +127,7 @@ namespace AsyncInn.Controllers
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
                 new Claim("UserId", user.Id),
-    
+
             };
 
             foreach (var item in role)
